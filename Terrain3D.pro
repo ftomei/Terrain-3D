@@ -1,8 +1,13 @@
-#-------------------------------------------------
+#-----------------------------------------------------------
 #
-# Project created by QtCreator 2019-01-21T19:00:24
+# Terrain-3D
+# 3D terrain visualizer using Qt libraries
 #
-#-------------------------------------------------
+# Terrain-3D is a test project for CRITERIA-3D distribution
+# https://github.com/ARPA-SIMC/CRITERIA3D
+# Author: Fausto Tomei
+#
+#-----------------------------------------------------------
 
 QT       += core gui widgets 3dcore 3drender 3dextras
 
