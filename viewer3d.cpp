@@ -36,7 +36,7 @@ Viewer3D::Viewer3D()
     m_ratio = NODATA;
     m_nrVertex = 0;
     isCameraChanging = false;
-    m_zoomLevel = 8;
+    m_zoomLevel = DEFAULT_ZOOMLEVEL;
 
     this->buildLookupTables();
 
@@ -86,15 +86,21 @@ void Viewer3D::initialize3D()
     m_ratio = m_size / m_dz;
     m_magnify = maxValue(1, minValue(10, m_ratio / 5));
 
+    m_zoomLevel = DEFAULT_ZOOMLEVEL;
+
     // Set root object of the scene
     createScene();
 
     // Camera
     m_view->camera()->lens()->setPerspectiveProjection(45.0f, 16.f/9.f, 0.01f, 1000000.f);
     m_view->camera()->setPosition(QVector3D(m_dtmCenter.utm.x, m_dtmCenter.utm.y, (m_dtmCenter.z + m_dz * m_zoomLevel) * m_magnify));
-    m_view->camera()->setViewCenter(QVector3D(m_dtmCenter.utm.x, m_dtmCenter.utm.y, m_dtmCenter.z * m_magnify));
+    m_view->camera()->setViewCenter(QVector3D(m_dtmCenter.utm.x, m_dtmCenter.utm.y - dy*0.25, m_dtmCenter.z * m_magnify));
 
     m_view->setRootEntity(m_rootEntity);
+
+    m_cameraMatrix = m_view->camera()->transform()->matrix();
+    m_cameraPosition = m_view->camera()->transform()->translation();
+    m_rotationZ = m_view->camera()->transform()->rotationZ();
 }
 
 
