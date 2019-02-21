@@ -1,7 +1,7 @@
 #-----------------------------------------------------------
 #
 # Terrain-3D
-# 3D terrain visualizer using Qt libraries
+# 3D terrain visualizer using Qt 3d libraries
 #
 # Terrain-3D is a test project for CRITERIA-3D distribution
 # https://github.com/ARPA-SIMC/CRITERIA3D

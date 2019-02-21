@@ -20,7 +20,8 @@ void Viewer3D::buildLookupTables()
 {
     for (int angle = 0; angle < 3600; angle++)
     {
-        m_cosTable[angle] = cos(angle / 10 * DEG_TO_RAD);
+        m_cosTable[angle] = cos(double(angle) / 10. * DEG_TO_RAD);
+        m_sinTable[angle] = sin(double(angle) / 10. * DEG_TO_RAD);
     }
 }
 
@@ -269,7 +270,7 @@ void Viewer3D::createScene()
 
     m_vertexPositionArray.resize(m_nrVertex * 3 * int(sizeof(float)));
     m_vertexColorArray.resize(m_nrVertex * 3 * int(sizeof(float)));
-    m_triangleIndexArray.resize(m_nrVertex * 2 * 3 * int(sizeof(uint)));
+    m_triangleIndexArray.resize(m_nrVertex * 4 * 3 * int(sizeof(uint)));
 
     float *vertexPosition = reinterpret_cast<float *>(m_vertexPositionArray.data());
     float *vertexColor = reinterpret_cast<float *>(m_vertexColorArray.data());
@@ -342,10 +343,12 @@ void Viewer3D::createScene()
     {
         for (int col = 0; col < m_terrain->indexMap.header->nrCols; col++)
         {
+            // initialize
             v0 = long(m_terrain->indexMap.value[row][col]);
             v1 = long(m_terrain->indexMap.header->flag);
             v2 = long(m_terrain->indexMap.header->flag);
             v3 = long(m_terrain->indexMap.header->flag);
+
             if (v0 != long(m_terrain->indexMap.header->flag))
             {
                 if (row < (m_terrain->indexMap.header->nrRows-1))
@@ -355,6 +358,7 @@ void Viewer3D::createScene()
                 if (col < (m_terrain->indexMap.header->nrCols-1))
                     v3 = long(m_terrain->indexMap.value[row][col+1]);
 
+                // clockwise
                 if (v1 != long(m_terrain->indexMap.header->flag) && v2 != long(m_terrain->indexMap.header->flag))
                 {
                     indexData[index*3] = uint(v0);
@@ -364,9 +368,25 @@ void Viewer3D::createScene()
                 }
                 if (v2 != long(m_terrain->indexMap.header->flag) && v3 != long(m_terrain->indexMap.header->flag))
                 {
-                    indexData[index*3] = uint(v2);
+                    indexData[index*3] = uint(v0);
                     indexData[index*3+1] = uint(v3);
-                    indexData[index*3+2] = uint(v0);
+                    indexData[index*3+2] = uint(v2);
+                    index++;
+                }
+
+                // anti-clockwise
+                if (v1 != long(m_terrain->indexMap.header->flag) && v2 != long(m_terrain->indexMap.header->flag))
+                {
+                    indexData[index*3] = uint(v0);
+                    indexData[index*3+1] = uint(v1);
+                    indexData[index*3+2] = uint(v2);
+                    index++;
+                }
+                if (v2 != long(m_terrain->indexMap.header->flag) && v3 != long(m_terrain->indexMap.header->flag))
+                {
+                    indexData[index*3] = uint(v0);
+                    indexData[index*3+1] = uint(v2);
+                    indexData[index*3+2] = uint(v3);
                     index++;
                 }
             }

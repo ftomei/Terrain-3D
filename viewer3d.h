@@ -34,6 +34,9 @@ class Viewer3D : public QWidget
         QMatrix4x4 m_cameraMatrix;
         QVector3D m_cameraPosition;
 
+        double m_cosTable[3600];
+        double m_sinTable[3600];
+
         bool isCameraChanging;
 
         double m_dz;
@@ -43,7 +46,6 @@ class Viewer3D : public QWidget
         double m_zoomLevel;
         double m_size;
         double m_ratio;
-        double m_cosTable[3600];
         int m_nrVertex;
 
         gis::Crit3DPoint m_dtmCenter;
