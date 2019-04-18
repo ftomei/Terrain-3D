@@ -36,6 +36,7 @@ class Viewer3D : public QWidget
         QPoint m_moveStartPoint;
         QMatrix4x4 m_cameraMatrix;
         QVector3D m_cameraPosition;
+        QVector3D m_centerObject;
 
         double m_cosTable[3600];
         double m_sinTable[3600];

@@ -91,10 +91,17 @@ void Viewer3D::initialize3D()
     // Set root object of the scene
     createScene();
 
+    m_centerObject = QVector3D(m_dtmCenter.utm.x, m_dtmCenter.utm.y, m_dtmCenter.z * m_magnify);
+
     // Camera
-    m_view->camera()->lens()->setPerspectiveProjection(45.0f, 16.f/9.f, 0.01f, 1000000.f);
-    m_view->camera()->setPosition(QVector3D(m_dtmCenter.utm.x, m_dtmCenter.utm.y, (m_dtmCenter.z + m_dz * m_zoomLevel) * m_magnify));
-    m_view->camera()->setViewCenter(QVector3D(m_dtmCenter.utm.x, m_dtmCenter.utm.y - dy*0.25, m_dtmCenter.z * m_magnify));
+    m_view->camera()->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 1000000.0f);
+    m_view->camera()->setPosition(QVector3D(m_centerObject.x(), m_centerObject.y(), m_centerObject.z() + (m_dz * m_zoomLevel) * m_magnify));
+    m_view->camera()->setViewCenter(m_centerObject);
+    //m_view->camera()->setUpVector(QVector3D(0, 0, 1));
+
+    // Camera controls
+    //Qt3DExtras::QOrbitCameraController *camController = new Qt3DExtras::QOrbitCameraController(m_rootEntity);
+    //camController->setCamera(m_view->camera());
 
     m_view->setRootEntity(m_rootEntity);
 
@@ -183,21 +190,28 @@ void Viewer3D::mouseMoveEvent(QMouseEvent *ev)
         QPoint delta = ev->pos() - m_moveStartPoint;
         if (m_button == Qt::RightButton)
         {  
-            /*float zoom = delta.y() * (m_size/10000000.f);
-            QVector3D axis = QVector3D(1, 0, 0);
-            QMatrix4x4 zoomMatrix = Qt3DCore::QTransform::rotateAround(-m_view->camera()->position(), zoom, axis);
-            QMatrix4x4 matrix = zoomMatrix * m_cameraMatrix;
-            m_view->camera()->transform()->setMatrix(matrix);*/
+            /*float angleX = delta.x() * (m_size/10000000);
+            QMatrix4x4 m;
+            m.translate(-m_centerObject);           // Move the object to the coordinate system's origin
+            m.rotate(angleX, QVector3D(0, 0, 1));   // Rotate around the z-axis with your angle.
+            m.translate(m_centerObject);            // Restore the object's original position
+            m_view->camera()->transform()->setMatrix(m * m_cameraMatrix);*/
+
+            float agleX = delta.x() * float(m_size/10000000.0);
+            QVector3D axis = QVector3D(1, 0, 1);
+            QMatrix4x4 m = Qt3DCore::QTransform::rotateAround(-m_centerObject, agleX, axis);
+            m_view->camera()->transform()->setMatrix(m * m_cameraMatrix);
 
             /*float dz = maxValue(m_terrain->DTM.maximum - m_terrain->DTM.minimum, 10.f);
             float z = m_terrain->DTM.minimum + dz * 0.5f;
             float dy = delta.y() * m_zoomLevel;
             m_view->camera()->setViewCenter(QVector3D(float(m_center.x), float(m_center.y), z * m_magnify));*/
 
-            float anglex = m_rotationZ - delta.x() * m_zoomLevel / 10;
-            //float angley = delta.y() * m_zoomLevel / 360.f;
-            m_view->camera()->transform()->setRotationZ(anglex);
-            //m_view->camera()->panAboutViewCenter(angley);
+            /*float anglex = m_rotationZ - delta.x() * m_zoomLevel / 10;
+            m_view->camera()->transform()->setRotationZ(anglex);*/
+
+            /*float angley = delta.y() * m_zoomLevel / 360.f;
+            m_view->camera()->panAboutViewCenter(angley);*/
         }
         else if (m_button == Qt::LeftButton)
         {
