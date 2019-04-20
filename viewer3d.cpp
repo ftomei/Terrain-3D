@@ -16,6 +16,9 @@
 #include <QFileDialog>
 
 
+#define DEFAULT_ZOOMLEVEL 8
+
+
 void Viewer3D::buildLookupTables()
 {
     for (int angle = 0; angle < 3600; angle++)
@@ -242,6 +245,8 @@ double Viewer3D::getCosTable(double angle)
 {
     if (angle < 0)
         angle += 360;
+    else if (angle >= 360)
+        angle -= 360;
     return m_cosTable[int(angle * 10)];
 }
 
@@ -296,8 +301,8 @@ void Viewer3D::createScene()
     float *vertexColor = reinterpret_cast<float *>(m_vertexColorArray.data());
     uint *indexData = reinterpret_cast<uint *>(m_triangleIndexArray.data());
 
-    float SlopeAmplification = 90.f / m_terrain->slopeMap.maximum;
-    float myAspect, mySlope, shadow;
+    double SlopeAmplification = 128.0 / double(m_terrain->slopeMap.maximum);
+    double myAspect, mySlope, shadow;
 
     // Vertices
     long index;
@@ -327,10 +332,11 @@ void Viewer3D::createScene()
                     if ((myAspect != m_terrain->aspectMap.header->flag)
                             && (mySlope != m_terrain->slopeMap.header->flag))
                     {
-                            shadow = getCosTable(myAspect) * mySlope * SlopeAmplification;
+                            // light from south-west
+                            shadow = getCosTable(myAspect+140) * mySlope * SlopeAmplification;
                     }
 
-                    setVertexColor(vertexColor, index, myColor, shadow);
+                    setVertexColor(vertexColor, index, myColor, float(shadow));
                 }
             }
         }

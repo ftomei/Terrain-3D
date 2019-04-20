@@ -7,8 +7,6 @@
 #include "terrain.h"
 
 
-#define DEFAULT_ZOOMLEVEL 8
-
 class Viewer3D : public QWidget
 {
     Q_OBJECT
