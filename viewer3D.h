@@ -12,25 +12,19 @@
         Q_OBJECT
 
     public:
-        Viewer3D(Crit3DGeometry *geometry);
-        float getSlope();
+        Viewer3D(Crit3DGeometry *myGeometry);
+
         Crit3DOpenGLWidget *glWidget;
 
     protected:
 
-    signals:
-        void slopeChanged();
-
     private:
-        QSlider *verticalSlider(int minimum, int maximum, int step, int tick);
-        QSlider *horizontalSlider(int minimum, int maximum, int step, int tick);
-
         QSlider *turnSlider;
         QSlider *rotateSlider;
         QSlider *magnifySlider;
-        QSlider *slopeSlider;
 
-        void on_slopeChanged();
+        QSlider *verticalSlider(int minimum, int maximum, int step, int tick);
+        QSlider *horizontalSlider(int minimum, int maximum, int step, int tick);
     };
 
 #endif

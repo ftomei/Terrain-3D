@@ -25,6 +25,7 @@ SOURCES += main.cpp \
     gis/color.cpp \
     gis/gis.cpp \
     gis/gisIO.cpp \
+    mainwindow.cpp \
     viewer3D.cpp
 
 HEADERS += \
@@ -33,6 +34,7 @@ HEADERS += \
     gis/commonConstants.h \
     gis/color.h \
     gis/gis.h \
+    mainwindow.h \
     viewer3D.h
 
 

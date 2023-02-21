@@ -100,6 +100,7 @@ QSize Crit3DOpenGLWidget::sizeHint() const
     return QSize(1000, 600);
 }
 
+
 void Crit3DOpenGLWidget::setXRotation(int angle)
 {
     angle = std::max(angle, 0);

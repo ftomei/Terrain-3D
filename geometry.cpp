@@ -14,7 +14,7 @@ void Crit3DGeometry::clear()
     m_dx = 0;
     m_dy = 0;
     m_magnify = 1;
-    m_artifactSlope = 45;
+    m_artifactSlope = 60;
 
     m_vertices.clear();
     m_colors.clear();

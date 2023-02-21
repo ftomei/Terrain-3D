@@ -1,3 +1,29 @@
+/*!
+    \file viewer3D.cpp
+
+    \abstract Viewer 3D widget
+
+    This file is part of CRITERIA3D.
+
+    CRITERIA3D has been developed by A.R.P.A.E. Emilia-Romagna.
+
+    \copyright
+    CRITERIA3D is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    CRITERIA3D is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+    You should have received a copy of the GNU Lesser General Public License
+    along with CRITERIA3D.  If not, see <http://www.gnu.org/licenses/>.
+
+    \authors
+    Fausto Tomei ftomei@arpae.it
+*/
+
+#include "commonConstants.h"
 #include "glWidget.h"
 #include "viewer3D.h"
 
@@ -8,13 +34,13 @@
 #include <QHBoxLayout>
 
 
-Viewer3D::Viewer3D(Crit3DGeometry *geometry)
+Viewer3D::Viewer3D(Crit3DGeometry *myGeometry)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowTitle(tr("Terrain 3D"));
 
     QHBoxLayout *glLayout = new QHBoxLayout;
-    glWidget = new Crit3DOpenGLWidget(geometry);
+    glWidget = new Crit3DOpenGLWidget(myGeometry);
     glLayout->addWidget(glWidget);
     turnSlider = verticalSlider(0, 360 * DEGREE_MULTIPLY, DEGREE_MULTIPLY, 15 * DEGREE_MULTIPLY);
     glLayout->addWidget(turnSlider);
@@ -31,17 +57,10 @@ Viewer3D::Viewer3D(Crit3DGeometry *geometry)
     magnifySlider = horizontalSlider(1, 100, 1, 5);
     magnifyLayout->addWidget(magnifySlider);
 
-    QHBoxLayout *slopeLayout = new QHBoxLayout;
-    QLabel *slopeLabel = new QLabel("Artifact slope: ");
-    slopeLayout->addWidget(slopeLabel);
-    slopeSlider = horizontalSlider(1, 100, 1, 5);
-    slopeLayout->addWidget(slopeSlider);
-
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addLayout(glLayout);
     mainLayout->addLayout(rotateLayout);
     mainLayout->addLayout(magnifyLayout);
-    mainLayout->addLayout(slopeLayout);
     setLayout(mainLayout);
 
     QStatusBar *statusBar = new QStatusBar(this);
@@ -52,12 +71,10 @@ Viewer3D::Viewer3D(Crit3DGeometry *geometry)
     connect(rotateSlider, &QSlider::valueChanged, glWidget, &Crit3DOpenGLWidget::setZRotation);
     connect(glWidget, &Crit3DOpenGLWidget::zRotationChanged, rotateSlider, &QSlider::setValue);
     connect(magnifySlider, &QSlider::valueChanged, glWidget, &Crit3DOpenGLWidget::setMagnify);
-    connect(slopeSlider, &QSlider::valueChanged, this, &Viewer3D::on_slopeChanged);
 
     turnSlider->setValue(30 * DEGREE_MULTIPLY);
     rotateSlider->setValue(0 * DEGREE_MULTIPLY);
-    magnifySlider->setValue(geometry->magnify() * 10);
-    slopeSlider->setValue(geometry->artifactSlope());
+    magnifySlider->setValue(myGeometry->magnify() * 10);
 }
 
 
@@ -82,17 +99,5 @@ QSlider* Viewer3D::horizontalSlider(int minimum, int maximum, int step, int tick
     slider->setTickInterval(tick);
     slider->setTickPosition(QSlider::TicksBelow);
     return slider;
-}
-
-
-float Viewer3D::getSlope()
-{
-    return slopeSlider->value();
-}
-
-
-void Viewer3D::on_slopeChanged()
-{
-    emit slopeChanged();
 }
 

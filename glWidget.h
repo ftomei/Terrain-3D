@@ -19,8 +19,9 @@ class Crit3DOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
     Q_OBJECT
 
 public:
-    Crit3DOpenGLWidget(Crit3DGeometry *m_geometry, QWidget *parent = nullptr);
+    Crit3DOpenGLWidget(Crit3DGeometry *geometry, QWidget *parent = nullptr);
     ~Crit3DOpenGLWidget() override;
+
     void clear();
 
     QSize minimumSizeHint() const override;
@@ -66,5 +67,7 @@ private:
     QMatrix4x4 m_camera;
     QMatrix4x4 m_world;
 };
+
+bool isEqual(float value1, float value2);
 
 #endif

@@ -1,13 +1,11 @@
 #include <QApplication>
-#include "geometry.h"
-#include "viewer3D.h"
+#include "mainWindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    Crit3DGeometry myGeometry;
-    Viewer3D w(&myGeometry);
+    MainWindow w;
     w.show();
 
     return a.exec();
