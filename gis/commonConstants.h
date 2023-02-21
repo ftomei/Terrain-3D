@@ -5,7 +5,6 @@
         #define NODATA -9999
     #endif
 
-    // -----------------MATHEMATICS---------------------
     #ifndef PI
         #define PI 3.141592653589793238462643383
     #endif

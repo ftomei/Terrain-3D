@@ -10,31 +10,30 @@
 #-----------------------------------------------------------
 
 QT       += core gui widgets
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat openglwidgets
 
 TARGET = TERRAIN_3D
 TEMPLATE = app
 
-# The following define makes your compiler emit warnings if you use
-# any feature of Qt which has been marked as deprecated (the exact warnings
-# depend on your compiler). Please consult the documentation of the
-# deprecated API in order to know how to port your code away from it.
-DEFINES += QT_DEPRECATED_WARNINGS
-DEFINES += _CRT_SECURE_NO_WARNINGS
-
 CONFIG += c++11
 
-INCLUDEPATH +=  gis
+INCLUDEPATH += gis
 
-SOURCES += \
-        main.cpp \
+SOURCES += main.cpp \
+    geometry.cpp \
+    glWidget.cpp \
     gis/color.cpp \
     gis/gis.cpp \
-    gis/gisIO.cpp
+    gis/gisIO.cpp \
+    viewer3D.cpp
 
 HEADERS += \
+    geometry.h \
+    glWidget.h \
     gis/commonConstants.h \
     gis/color.h \
-    gis/gis.h
+    gis/gis.h \
+    viewer3D.h
 
 
 # Default rules for deployment.
