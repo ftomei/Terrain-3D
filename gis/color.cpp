@@ -63,6 +63,7 @@ bool Crit3DColorScale::setRange(float myMinimum, float myMaximum)
     return true;
 }
 
+
 bool Crit3DColorScale::classify()
 {
     int i, j, n, nrIntervals;
@@ -140,120 +141,6 @@ bool setDefaultDTMScale(Crit3DColorScale* myScale)
     return(myScale->classify());
 }
 
-bool setTemperatureScale(Crit3DColorScale* myScale)
-{
-    myScale->nrKeyColors = 5;
-    myScale->nrColors = 256;
-    myScale->keyColor = new Crit3DColor[unsigned(myScale->nrKeyColors)];
-    myScale->color = new Crit3DColor[unsigned(myScale->nrColors)];
-    myScale->classification = classificationMethod::EqualInterval;
-
-    myScale->keyColor[0] = Crit3DColor(0, 0, 255);         /*!< blue */
-    myScale->keyColor[1] = Crit3DColor(64, 196, 64);       /*!< green */
-    myScale->keyColor[2] = Crit3DColor(255, 255, 0);       /*!< yellow */
-    myScale->keyColor[3] = Crit3DColor(255, 0, 0);         /*!< red */
-    myScale->keyColor[4] = Crit3DColor(128, 0, 128);       /*!< violet */
-
-    return(myScale->classify());
-}
-
-bool setPrecipitationScale(Crit3DColorScale* myScale)
-{
-    myScale->nrKeyColors = 6;
-    myScale->nrColors = 256;
-    myScale->keyColor = new Crit3DColor[unsigned(myScale->nrKeyColors)];
-    myScale->color = new Crit3DColor[unsigned(myScale->nrColors)];
-    myScale->classification = classificationMethod::EqualInterval;
-
-    myScale->keyColor[0] = Crit3DColor(255, 255, 255);
-    myScale->keyColor[1] = Crit3DColor(0, 0, 255);         /*!< blue */
-    myScale->keyColor[2] = Crit3DColor(64, 196, 64);       /*!< green */
-    myScale->keyColor[3] = Crit3DColor(255, 255, 0);       /*!< yellow */
-    myScale->keyColor[4] = Crit3DColor(255, 0, 0);         /*!< red */
-    myScale->keyColor[5] = Crit3DColor(128, 0, 128);       /*!< violet */
-
-    return(myScale->classify());
-}
-
-
-bool setZeroCenteredScale(Crit3DColorScale* myScale)
-{
-    myScale->nrKeyColors = 5;
-    myScale->nrColors = 256;
-    myScale->keyColor = new Crit3DColor[unsigned(myScale->nrKeyColors)];
-    myScale->color = new Crit3DColor[unsigned(myScale->nrColors)];
-    myScale->classification = classificationMethod::EqualInterval;
-
-    myScale->keyColor[0] = Crit3DColor(255, 0, 0);         /*!< red */
-    myScale->keyColor[1] = Crit3DColor(255, 255, 0);       /*!< yellow */
-    myScale->keyColor[2] = Crit3DColor(255, 255, 255);     /*!< white */
-    myScale->keyColor[3] = Crit3DColor(64, 196, 64);       /*!< green */
-    myScale->keyColor[4] = Crit3DColor(0, 0, 255);         /*!< blue */
-
-    return(myScale->classify());
-}
-
-
-bool setRelativeHumidityScale(Crit3DColorScale* myScale)
-{
-    myScale->nrKeyColors = 3;
-    myScale->nrColors = 256;
-    myScale->keyColor = new Crit3DColor[unsigned(myScale->nrKeyColors)];
-    myScale->color = new Crit3DColor[unsigned(myScale->nrColors)];
-    myScale->classification = classificationMethod::EqualInterval;
-
-    myScale->keyColor[0] = Crit3DColor(128, 0, 0);
-    myScale->keyColor[1] = Crit3DColor(255, 255, 0);
-    myScale->keyColor[2] = Crit3DColor(0, 0, 255);
-
-    return(myScale->classify());
-}
-
-bool setLeafWetnessScale(Crit3DColorScale* myScale)
-{
-    myScale->nrKeyColors = 3;
-    myScale->nrColors = 256;
-    myScale->keyColor = new Crit3DColor[unsigned(myScale->nrKeyColors)];
-    myScale->color = new Crit3DColor[unsigned(myScale->nrColors)];
-    myScale->classification = classificationMethod::EqualInterval;
-
-    myScale->keyColor[0] = Crit3DColor(128, 0, 0);
-    myScale->keyColor[1] = Crit3DColor(255, 255, 0);
-    myScale->keyColor[2] = Crit3DColor(0, 0, 128);
-
-    return(myScale->classify());
-}
-
-bool setWindIntensityScale(Crit3DColorScale* myScale)
-{
-    myScale->nrKeyColors = 3;
-    myScale->nrColors = 256;
-    myScale->keyColor = new Crit3DColor[unsigned(myScale->nrKeyColors)];
-    myScale->color = new Crit3DColor[unsigned(myScale->nrColors)];
-    myScale->classification = classificationMethod::EqualInterval;
-
-    myScale->keyColor[0] = Crit3DColor(32, 128, 32);         /*!<  dark green */
-    myScale->keyColor[1] = Crit3DColor(255, 255, 0);
-    myScale->keyColor[2] = Crit3DColor(255, 0, 0);
-
-    return(myScale->classify());
-}
-
-bool setRadiationScale(Crit3DColorScale* myScale)
-{
-    myScale->nrKeyColors = 4;
-    myScale->nrColors = 256;
-    myScale->keyColor = new Crit3DColor[unsigned(myScale->nrKeyColors)];
-    myScale->color = new Crit3DColor[unsigned(myScale->nrColors)];
-    myScale->classification = classificationMethod::EqualInterval;
-
-    myScale->keyColor[0] = Crit3DColor(0, 0, 255);
-    myScale->keyColor[1] = Crit3DColor(255, 255, 0);
-    myScale->keyColor[2] = Crit3DColor(255, 0, 0);
-    myScale->keyColor[3] = Crit3DColor(128, 0, 128);       /*!< violet */
-
-    return(myScale->classify());
-}
 
 /*!
  * \brief roundColorScale round colorScale values on the second (or third) digit of each range.
@@ -266,18 +153,22 @@ bool setRadiationScale(Crit3DColorScale* myScale)
  */
 bool roundColorScale(Crit3DColorScale* myScale, int nrIntervals, bool lessRounded)
 {
-    if (myScale == nullptr) return false;
-    if (myScale->minimum == NODATA || myScale->maximum == NODATA) return false;
-    if (nrIntervals < 1) return false;
-    if (myScale->minimum == myScale->maximum) return false;
+    if (myScale == nullptr)
+        return false;
+    if (myScale->minimum == NODATA || myScale->maximum == NODATA)
+        return false;
+    if (nrIntervals < 1)
+        return false;
+    if (myScale->minimum == myScale->maximum)
+        return false;
 
-    float avg = myScale->minimum + (myScale->maximum - myScale->minimum) / 2;
-    float level = (myScale->maximum - myScale->minimum) / nrIntervals;
+    double avg = myScale->minimum + (myScale->maximum - myScale->minimum) * 0.5;
+    double level = (myScale->maximum - myScale->minimum) / nrIntervals;
 
-    float logLevel = log10(level);
+    double logLevel = log10(level);
 
-    float myExp;
-    float roundAvg = avg;
+    double myExp;
+    double roundAvg = avg;
 
     if (avg == 0)
     {
@@ -285,30 +176,23 @@ bool roundColorScale(Crit3DColorScale* myScale, int nrIntervals, bool lessRounde
     }
     else
     {
-        float logAvg = log10(avg);
+        double logAvg = log10(avg);
         if (lessRounded)
             myExp = std::min(floor(logLevel)-1, floor(logAvg)-1);
         else
             myExp = std::max(floor(logLevel)-1, floor(logAvg)-1);
     }
 
-    float pow10 = powf(10.0, myExp);
-    float roundLevel = ceil(level / pow10) * pow10;
-
+    double pow10 = pow(10.0, myExp);
     if (avg != 0)
+    {
         roundAvg = round(avg / pow10) * pow10;
+    }
 
-    if (myScale->minimum == 0)
-    {
-        //precipitation
-        myScale->maximum = roundLevel * nrIntervals;
-    }
-    else
-    {
-        myScale->minimum = roundAvg - roundLevel*(nrIntervals/2);
-        myScale->maximum = roundAvg + roundLevel*(nrIntervals/2);
-    }
+    double roundLevel = ceil(level / pow10) * pow10;
+
+    myScale->minimum = float(roundAvg - roundLevel*(nrIntervals/2));
+    myScale->maximum = float(roundAvg + roundLevel*(nrIntervals/2));
     return true;
 }
-
 

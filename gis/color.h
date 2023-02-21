@@ -57,13 +57,6 @@
     };
 
     bool setDefaultDTMScale(Crit3DColorScale* myScale);
-    bool setTemperatureScale(Crit3DColorScale* myScale);
-    bool setPrecipitationScale(Crit3DColorScale* myScale);
-    bool setRelativeHumidityScale(Crit3DColorScale* myScale);
-    bool setRadiationScale(Crit3DColorScale* myScale);
-    bool setWindIntensityScale(Crit3DColorScale* myScale);
-    bool setLeafWetnessScale(Crit3DColorScale* myScale);
-    bool setZeroCenteredScale(Crit3DColorScale* myScale);
     bool roundColorScale(Crit3DColorScale* myScale, int nrIntervals, bool lessRounded);
 
 

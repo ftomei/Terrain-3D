@@ -1,14 +1,6 @@
 #ifndef COMMONCONSTANTS_H
 #define COMMONCONSTANTS_H
 
-    #ifndef minValue
-        #define minValue(a, b) (((a) < (b))? (a) : (b))
-    #endif
-
-    #ifndef maxValue
-        #define maxValue(a, b) (((a) > (b))? (a) : (b))
-    #endif
-
     #ifndef NODATA
         #define NODATA -9999
     #endif

@@ -9,8 +9,7 @@
 #
 #-----------------------------------------------------------
 
-QT       += core gui widgets 3dcore 3drender 3dextras
-
+QT       += core gui widgets
 
 TARGET = TERRAIN_3D
 TEMPLATE = app
@@ -30,16 +29,12 @@ SOURCES += \
         main.cpp \
     gis/color.cpp \
     gis/gis.cpp \
-    gis/gisIO.cpp \
-    viewer3d.cpp \
-    terrain.cpp
+    gis/gisIO.cpp
 
 HEADERS += \
     gis/commonConstants.h \
     gis/color.h \
-    gis/gis.h \
-    viewer3d.h \
-    terrain.h
+    gis/gis.h
 
 
 # Default rules for deployment.

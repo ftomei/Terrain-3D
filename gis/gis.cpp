@@ -466,7 +466,7 @@ namespace gis
             dx = x2 - x1;
             dy = y2 - y1;
 
-            return sqrt((dx * dx)+(dy * dy));
+            return sqrtf((dx * dx)+(dy * dy));
     }
 
     void getRowColFromXY(const Crit3DRasterGrid& myGrid, double myX, double myY, int *row, int *col)
@@ -846,7 +846,6 @@ namespace gis
     {
         if (! dtm.isLoaded) return false;
 
-        double reciprocalCellSize;
         double dz_dx, dz_dy;
         double slope, aspect;
         double z, dz;
@@ -856,39 +855,12 @@ namespace gis
         slopeMap->initializeGrid(dtm);
         aspectMap->initializeGrid(dtm);
 
-        reciprocalCellSize = 1. / dtm.header->cellSize;
-
         for (int myRow = 0; myRow < dtm.header->nrRows; myRow++)
             for (int myCol = 0; myCol < dtm.header->nrCols; myCol++)
             {
                 z = dtm.value[myRow][myCol];
                 if (z != dtm.header->flag)
                 {
-                    /* OLD METHOD
-                    zNorth = dtm.getValueFromRowCol(myRow-1, myCol);
-                    zSouth = dtm.getValueFromRowCol(myRow+1, myCol);
-
-                    if (zNorth != dtm.header->flag && zSouth != dtm.header->flag)
-                        dz_dy = 0.5 * (zNorth - zSouth) * reciprocalCellSize;
-                    else if (zNorth != dtm.header->flag)
-                        dz_dy = (zNorth - z) * reciprocalCellSize;
-                    else if (zSouth != dtm.header->flag)
-                        dz_dy = (z - zSouth) * reciprocalCellSize;
-                    else
-                        dz_dy = EPSILON;
-
-                    zWest = dtm.getValueFromRowCol(myRow, myCol-1);
-                    zEast = dtm.getValueFromRowCol(myRow, myCol+1);
-
-                    if (zWest != dtm.header->flag && zEast != dtm.header->flag)
-                        dz_dx = 0.5 * (zWest - zEast) * reciprocalCellSize;
-                    else if (zWest != dtm.header->flag)
-                        dz_dx = (zWest - z) * reciprocalCellSize;
-                    else if (zEast != dtm.header->flag)
-                        dz_dx = (z - zEast) * reciprocalCellSize;
-                    else
-                        dz_dx = EPSILON;*/
-
                     /*! compute dz/dy */
                     nr = 0;
                     dz = 0;
@@ -967,45 +939,6 @@ namespace gis
     }
 
 
-    bool mapAlgebra(gis::Crit3DRasterGrid* myMap1, gis::Crit3DRasterGrid* myMap2,
-                    gis::Crit3DRasterGrid* myMapOut, operationType myOperation)
-    {
-        if (myMapOut == nullptr || myMap1 == nullptr || myMap2 == nullptr) return false;
-        if (! (*(myMap1->header) == *(myMap2->header))) return false;
-        if (! (*(myMapOut->header) == *(myMap1->header))) return false;
-
-        for (int myRow=0; myRow<myMapOut->header->nrRows; myRow++)
-            for (int myCol=0; myCol<myMapOut->header->nrCols; myCol++)
-            {
-                if (myMap1->value[myRow][myCol] != myMap1->header->flag && myMap2->value[myRow][myCol] != myMap2->header->flag)
-                {
-                    if (myOperation == operationMin)
-                    {
-                        myMapOut->value[myRow][myCol] = minValue(myMap1->value[myRow][myCol], myMap2->value[myRow][myCol]);
-                    }
-                    else if (myOperation == operationMax)
-                    {
-                        myMapOut->value[myRow][myCol] = maxValue(myMap1->value[myRow][myCol], myMap2->value[myRow][myCol]);
-                    }
-                    else if (myOperation == operationSum)
-                        myMapOut->value[myRow][myCol] = (myMap1->value[myRow][myCol] + myMap2->value[myRow][myCol]);
-                    else if (myOperation == operationSubtract)
-                        myMapOut->value[myRow][myCol] = (myMap1->value[myRow][myCol] - myMap2->value[myRow][myCol]);
-                    else if (myOperation == operationProduct)
-                        myMapOut->value[myRow][myCol] = (myMap1->value[myRow][myCol] * myMap2->value[myRow][myCol]);
-                    else if (myOperation == operationDivide)
-                    {
-                        if (myMap2->value[myRow][myCol] != 0)
-                            myMapOut->value[myRow][myCol] = (myMap1->value[myRow][myCol] / myMap2->value[myRow][myCol]);
-                        else
-                            return false;
-                    }
-                }
-            }
-
-        return true;
-    }
-
     bool mapAlgebra(gis::Crit3DRasterGrid* myMap1, float myValue,
                     gis::Crit3DRasterGrid* myMapOut, operationType myOperation)
     {
@@ -1018,9 +951,9 @@ namespace gis
                 if (myMap1->value[myRow][myCol] != myMap1->header->flag)
                 {
                     if (myOperation == operationMin)
-                        myMapOut->value[myRow][myCol] = minValue(myMap1->value[myRow][myCol], myValue);
+                        myMapOut->value[myRow][myCol] = std::min(myMap1->value[myRow][myCol], myValue);
                     else if (myOperation == operationMax)
-                        myMapOut->value[myRow][myCol] = maxValue(myMap1->value[myRow][myCol], myValue);
+                        myMapOut->value[myRow][myCol] = std::max(myMap1->value[myRow][myCol], myValue);
                     else if (myOperation == operationSum)
                         myMapOut->value[myRow][myCol] = (myMap1->value[myRow][myCol] + myValue);
                     else if (myOperation == operationSubtract)
@@ -1039,6 +972,7 @@ namespace gis
 
         return true;
     }
+
 
     /*!
      * \brief return true if value(row, col) > all values of neighbours
@@ -1284,7 +1218,7 @@ namespace gis
             demValue = dem_.getFastValueXY(x, y);
             if (demValue != dem_.header->flag)
                 if (demValue > Zi)
-                    maxDeltaZ = maxValue(maxDeltaZ, demValue - Zi);
+                    maxDeltaZ = std::max(maxDeltaZ, demValue - Zi);
         }
 
         return maxDeltaZ;

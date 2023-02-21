@@ -231,7 +231,9 @@ namespace gis
 
     bool readEsriGrid(string myFileName, Crit3DRasterGrid* myGrid, string* myError)
     {
-        if (myGrid == nullptr) return(false);
+        if (myGrid == nullptr)
+            return false;
+
         myGrid->isLoaded = false;
 
         Crit3DRasterHeader *myHeader;
@@ -248,9 +250,14 @@ namespace gis
                 updateMinMaxRasterGrid(myGrid);
             }
         }
+        else
+        {
+            delete myHeader;
+        }
 
-        return(myGrid->isLoaded);
+        return myGrid->isLoaded;
     }
+
 
     bool writeEsriGrid(string myFileName, Crit3DRasterGrid *myGrid, string *myError)
     {
